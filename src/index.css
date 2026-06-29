@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand */
+  --color-primary: #4e2fd2;
+  --color-primary-soft: #4e2fd2b2;
+  --color-accent: #0046c7;
+  --color-link: #0000ee;
+
+  /* Surfaces */
+  --color-canvas: #f0f4f7;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f1f1f2;
+
+  /* Text */
+  --color-content: #1f1f1f;
+  --color-content-label: #484848;
+  --color-content-secondary: #525963;
+  --color-content-muted: #a8b2bd;
+
+  /* Borders */
+  --color-line: #ced6de;
+  --color-line-subtle: #e6ebf0;
+
+  /* Feedback */
+  --color-success: #0aa288;
+  --color-danger: #d8392b;
+  --color-highlight: #edf4ff;
+
+  /* Type */
+  --font-sans: "Gilroy", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+@font-face {
+  font-family: "Gilroy";
+  src: url("/fonts/Gilroy-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  background-color: var(--color-canvas);
+  color: var(--color-content);
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
