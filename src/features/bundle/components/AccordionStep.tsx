@@ -28,7 +28,7 @@ function AccordionStep({ step, isOpen, onToggle }: AccordionStepProps) {
   }
 
   return (
-    <div className= {`overflow-hidden rounded-xl ${  isOpen? "bg-highlight":""}`}>
+    <div className={`overflow-hidden rounded-xl ${isOpen ? 'bg-highlight' : ''}`}>
       <div className="px-5 pt-3 pb-2 border-b border-line-subtle">
         <span className="text-xs font-normal text-content-label uppercase tracking-widest">
           STEP {step.stepNumber} OF {steps.length}

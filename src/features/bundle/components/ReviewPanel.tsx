@@ -68,7 +68,7 @@ export default function ReviewPanel() {
   return (
     <div className="bg-highlight rounded-xl border-2 border-accent overflow-hidden sticky top-4 px-5 pt-4 pb-7">
       <div className=" pb-3">
-        <p className="text-xs font-normal tracking-widest text-content-label uppercase tracking-widest mb-6">
+        <p className="text-xs font-normal text-content-label uppercase tracking-widest mb-6">
           REVIEW
         </p>
         <h2 className="text-[22px] font-bold text-content leading-tight">
@@ -144,7 +144,7 @@ export default function ReviewPanel() {
             <div className="bg-primary text-white text-xs text-center font-normal px-2.5 py-1 rounded-xs whitespace-nowrap">
               as low as ${monthlyFinancing}/mo
             </div>
-            <div className="flex  items-center gap-1 shrink-0 leading-tight">
+            <div className="flex items-center gap-1 shrink-0 leading-tight">
               <span className="text-lg text-content-subtle line-through">
                 ${compareTotal.toFixed(2)}
               </span>
@@ -156,7 +156,7 @@ export default function ReviewPanel() {
         </div>
 
         {savings > 0 && (
-          <div className="bg-highlight rounded-lg  py-1.5 mb-3 text-center">
+          <div className="bg-highlight rounded-lg py-1.5 mb-3 text-center">
             <p className="text-success text-[11px] font-semibold">
               Congrats! You're saving ${savings.toFixed(2)} on your security
               bundle!

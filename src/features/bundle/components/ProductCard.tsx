@@ -68,7 +68,7 @@ function ProductCard({ product, stepId }: ProductCardProps) {
           alt={product.name}
           loading="lazy"
           onError={handleImageError}
-          // className="max-h-32 max-w-full object-contain"
+          className="max-h-28 max-w-full object-contain"
         />
       </div>
 
@@ -119,7 +119,7 @@ function ProductCard({ product, stepId }: ProductCardProps) {
           </div>
         )}
 
-        <div className=" flex  justify-between items-center ">
+        <div className="flex justify-between items-center">
           <QuantityStepper
             quantity={currentQty}
             onDecrement={handleDecrement}
