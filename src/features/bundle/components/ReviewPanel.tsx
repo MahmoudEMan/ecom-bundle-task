@@ -13,6 +13,7 @@ export default function ReviewPanel() {
   const { setVariantQuantity, setProductQuantity, saveSystem } =
     useBundleActions();
   const [saved, setSaved] = useState(false);
+  const [checkedOut, setCheckedOut] = useState(false);
 
   const items = useMemo(() => getReviewItems(steps), [steps]);
   const { compareTotal, total, savings } = useMemo(
@@ -63,6 +64,11 @@ export default function ReviewPanel() {
     saveSystem();
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
+  }
+
+  function handleCheckout() {
+    setCheckedOut(true);
+    setTimeout(() => setCheckedOut(false), 2500);
   }
 
   return (
@@ -165,10 +171,11 @@ export default function ReviewPanel() {
         )}
 
         <button
+          onClick={handleCheckout}
           disabled={isEmpty}
           className="w-full bg-primary hover:bg-primary/90 active:bg-primary/80 text-white font-bold py-3.5 rounded-xl transition-colors text-[15px] tracking-wide disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-primary"
         >
-          Checkout
+          {checkedOut ? "✓ Order placed!" : "Checkout"}
         </button>
 
         <div className="mt-3 text-center">

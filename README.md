@@ -11,12 +11,24 @@ A multi-step security system bundle builder built as a frontend take-home projec
 
 ## Getting Started
 
+From a clean clone:
+
 ```bash
-npm install
-npm run dev
+npm install      # install dependencies
+npm run dev      # start the dev server (http://localhost:5173)
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+Then open [http://localhost:5173](http://localhost:5173).
+
+Other scripts:
+
+```bash
+npm run build    # type-check (tsc) + production build to dist/
+npm run preview  # serve the production build locally
+npm run lint     # run ESLint
+```
+
+Requires Node 18+.
 
 ## Features
 
@@ -38,6 +50,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 - Total recalculates on every quantity change (compare-at struck through, savings callout)
 - Financing estimate shown ("as low as $X/mo")
 - Free shipping line item
+- **Checkout** shows an inline "Order placed!" confirmation (placeholder, as the brief allows); it's disabled when nothing is selected
 
 ### Persistence
 - "Save my system for later" writes state to `localStorage` via Zustand's `persist` middleware
@@ -82,7 +95,8 @@ src/
 - **Zustand over Redux**: lighter API for this scope; `persist` middleware handles localStorage in one line.
 - **Custom `merge` on persist**: only quantities, active variants, and `activeStep` are re-hydrated from localStorage — product data (names, prices, images) always comes fresh from JSON, so a price change in the catalogue can never be masked by stale persisted state.
 - **Tailwind CSS v4**: the new `@import "tailwindcss"` syntax with the Vite plugin — no separate config file. The whole app is Tailwind end-to-end (no inline style objects).
-- **Responsive**: builder/review stack vertically below `lg`; the product grid collapses to one column on the narrowest screens; the review panel is sticky on desktop.
+- **Design tokens**: every colour from the Figma is defined once as a semantic CSS variable in `src/index.css` (`--color-primary`, `--color-surface`, `--color-content`, etc.) and wired into Tailwind v4's `@theme`, so components use semantic utilities (`bg-surface`, `text-content`) rather than hardcoded palette classes. Re-skinning is a single-file change.
+- **Responsive**: builder and review panel stack vertically below `lg`; the product cards sit two-up on wide screens and collapse to a single column on smaller ones (a lone trailing card is centred); the review panel is sticky on desktop.
 - **Images**: graceful fallback renders an inline SVG placeholder if a product image fails to load; images are lazy-loaded.
 - **No backend**: JSON served as a local module import — adding a backend would mean swapping the import for a `fetch` call behind a query hook.
 
