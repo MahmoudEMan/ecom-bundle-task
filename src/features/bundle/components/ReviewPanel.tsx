@@ -1,66 +1,82 @@
-import { useMemo, useState } from 'react'
-import { TruckIcon } from '@/components/ui/icons/StepIcons'
-import QuantityStepper from '@/components/ui/QuantityStepper'
-import { useSteps, useShipping, useBundleActions } from '../store/bundleStore'
-import { getReviewItems, computeTotals, FINANCING_MONTHS } from '../selectors'
-import type { ReviewLineItem } from '../types'
+import { useMemo, useState } from "react";
+import { TruckIcon } from "@/components/ui/icons/StepIcons";
+import QuantityStepper from "@/components/ui/QuantityStepper";
+import { useSteps, useShipping, useBundleActions } from "../store/bundleStore";
+import { getReviewItems, computeTotals, FINANCING_MONTHS } from "../selectors";
+import type { ReviewLineItem } from "../types";
 
-const CATEGORY_ORDER = ['CAMERAS', 'SENSORS', 'ACCESSORIES', 'PLAN']
+const CATEGORY_ORDER = ["CAMERAS", "SENSORS", "ACCESSORIES", "PLAN"];
 
 export default function ReviewPanel() {
-  const steps = useSteps()
-  const shipping = useShipping()
-  const { setVariantQuantity, setProductQuantity, saveSystem } = useBundleActions()
-  const [saved, setSaved] = useState(false)
+  const steps = useSteps();
+  const shipping = useShipping();
+  const { setVariantQuantity, setProductQuantity, saveSystem } =
+    useBundleActions();
+  const [saved, setSaved] = useState(false);
 
-  const items = useMemo(() => getReviewItems(steps), [steps])
+  const items = useMemo(() => getReviewItems(steps), [steps]);
   const { compareTotal, total, savings } = useMemo(
     () => computeTotals(items, shipping),
     [items, shipping],
-  )
-  const monthlyFinancing = (total / FINANCING_MONTHS).toFixed(2)
+  );
+  const monthlyFinancing = (total / FINANCING_MONTHS).toFixed(2);
 
   const grouped = useMemo(
     () =>
       CATEGORY_ORDER.reduce<Record<string, ReviewLineItem[]>>((acc, cat) => {
-        const catItems = items.filter(i => i.category === cat)
-        if (catItems.length > 0) acc[cat] = catItems
-        return acc
+        const catItems = items.filter((i) => i.category === cat);
+        if (catItems.length > 0) acc[cat] = catItems;
+        return acc;
       }, {}),
     [items],
-  )
+  );
 
-  const isEmpty = items.length === 0
+  const isEmpty = items.length === 0;
 
   function handleDecrement(item: ReviewLineItem) {
     if (item.variantId) {
-      setVariantQuantity(item.stepId, item.productId, item.variantId, item.quantity - 1)
+      setVariantQuantity(
+        item.stepId,
+        item.productId,
+        item.variantId,
+        item.quantity - 1,
+      );
     } else {
-      setProductQuantity(item.stepId, item.productId, item.quantity - 1)
+      setProductQuantity(item.stepId, item.productId, item.quantity - 1);
     }
   }
 
   function handleIncrement(item: ReviewLineItem) {
     if (item.variantId) {
-      setVariantQuantity(item.stepId, item.productId, item.variantId, item.quantity + 1)
+      setVariantQuantity(
+        item.stepId,
+        item.productId,
+        item.variantId,
+        item.quantity + 1,
+      );
     } else {
-      setProductQuantity(item.stepId, item.productId, item.quantity + 1)
+      setProductQuantity(item.stepId, item.productId, item.quantity + 1);
     }
   }
 
   function handleSave() {
-    saveSystem()
-    setSaved(true)
-    setTimeout(() => setSaved(false), 2500)
+    saveSystem();
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2500);
   }
 
   return (
     <div className="bg-highlight rounded-xl border-2 border-accent overflow-hidden sticky top-4 px-5 pt-4 pb-7">
       <div className=" pb-3">
-        <p className="text-xs font-normal tracking-widest text-content-label uppercase tracking-widest mb-6">REVIEW</p>
-        <h2 className="text-[22px] font-bold text-content leading-tight">Your security system</h2>
+        <p className="text-xs font-normal tracking-widest text-content-label uppercase tracking-widest mb-6">
+          REVIEW
+        </p>
+        <h2 className="text-[22px] font-bold text-content leading-tight">
+          Your security system
+        </h2>
         <p className="text-content-muted text-xs mt-1 leading-snug">
-          Review your personalised protection system designed to keep what matters most safe.
+          Review your personalised protection system designed to keep what
+          matters most safe.
         </p>
       </div>
 
@@ -76,10 +92,12 @@ export default function ReviewPanel() {
 
         {Object.entries(grouped).map(([category, catItems]) => (
           <div key={category}>
-            <p className="text-[10px] font-bold text-content-muted uppercase tracking-widest mb-2">{category}</p>
+            <p className="text-[10px] font-bold text-content-muted uppercase tracking-widest mb-2">
+              {category}
+            </p>
 
             <div className="space-y-3">
-              {catItems.map(item => (
+              {catItems.map((item) => (
                 <ReviewLineItem
                   key={item.id}
                   item={item}
@@ -88,8 +106,7 @@ export default function ReviewPanel() {
                 />
               ))}
             </div>
-                  <div className="h-px mt-2 bg-line-subtle" />
-
+            <div className="h-px mt-2 bg-line-subtle" />
           </div>
         ))}
 
@@ -97,9 +114,13 @@ export default function ReviewPanel() {
           <div className="w-8 h-8 shrink-0 flex items-center justify-center">
             <TruckIcon className="w-6 h-6 text-success" />
           </div>
-          <span className="flex-1 text-xs font-medium text-content-secondary">{shipping.label}</span>
+          <span className="flex-1 text-xs font-medium text-content-secondary">
+            {shipping.label}
+          </span>
           <div className="text-right">
-            <p className="text-[11px] text-content-muted line-through leading-none">${shipping.comparePrice.toFixed(2)}</p>
+            <p className="text-[11px] text-content-muted line-through leading-none">
+              ${shipping.comparePrice.toFixed(2)}
+            </p>
             <p className="text-xs font-bold text-primary">FREE</p>
           </div>
         </div>
@@ -108,28 +129,37 @@ export default function ReviewPanel() {
       <div className="h-px bg-line-subtle" />
 
       <div className=" py-4">
+
         <div className="flex items-center justify-between gap-3 mb-3">
-          <div className="flex items-center gap-2 min-w-0">
+
+          <div className=" min-w-0">
             <img
               src="/images/satisfaction-badge.png"
               alt="100% Wyze satisfaction guarantee"
-              className="w-12 h-12 shrink-0 object-contain"
+              className="w-20 h-20 shrink-0 object-contain"
             />
-            <div className="bg-primary text-white text-[10px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap">
-              as low as ${monthlyFinancing}/mo
-            </div>
           </div>
 
-          <div className="flex flex-col items-end shrink-0 leading-tight">
-            <span className="text-sm text-content-muted line-through">${compareTotal.toFixed(2)}</span>
-            <span className="text-3xl font-bold text-content">${total.toFixed(2)}</span>
+          <div>
+            <div className="bg-primary text-white text-xs text-center font-normal px-2.5 py-1 rounded-xs whitespace-nowrap">
+              as low as ${monthlyFinancing}/mo
+            </div>
+            <div className="flex  items-center gap-1 shrink-0 leading-tight">
+              <span className="text-lg text-content-subtle line-through">
+                ${compareTotal.toFixed(2)}
+              </span>
+              <span className="text-2xl font-bold text-primary">
+                ${total.toFixed(2)}
+              </span>
+            </div>
           </div>
         </div>
 
         {savings > 0 && (
           <div className="bg-highlight rounded-lg  py-1.5 mb-3 text-center">
             <p className="text-success text-[11px] font-semibold">
-              Congrats! You're saving ${savings.toFixed(2)} on your security bundle!
+              Congrats! You're saving ${savings.toFixed(2)} on your security
+              bundle!
             </p>
           </div>
         )}
@@ -146,12 +176,12 @@ export default function ReviewPanel() {
             onClick={handleSave}
             className="text-xs text-content-secondary hover:text-primary underline underline-offset-2 transition-colors italic"
           >
-            {saved ? '✓ System saved!' : 'Save my system for later'}
+            {saved ? "✓ System saved!" : "Save my system for later"}
           </button>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function ReviewLineItem({
@@ -159,11 +189,11 @@ function ReviewLineItem({
   onDecrement,
   onIncrement,
 }: {
-  item: ReviewLineItem
-  onDecrement: () => void
-  onIncrement: () => void
+  item: ReviewLineItem;
+  onDecrement: () => void;
+  onIncrement: () => void;
 }) {
-  const isPlan = item.category === 'PLAN'
+  const isPlan = item.category === "PLAN";
 
   return (
     <div className="flex items-center gap-2">
@@ -177,7 +207,9 @@ function ReviewLineItem({
       </div>
 
       <div className="flex-1 min-w-0">
-        <p className={`text-xs font-medium leading-snug truncate ${isPlan ? 'text-primary font-bold' : 'text-content'}`}>
+        <p
+          className={`text-xs font-medium leading-snug truncate ${isPlan ? "text-primary font-bold" : "text-content"}`}
+        >
           {item.name}
         </p>
       </div>
@@ -195,23 +227,19 @@ function ReviewLineItem({
         {item.comparePrice != null && (
           <p className="text-[14px] text-content-muted line-through leading-none">
             {isPlan
-              ? `$${item.comparePrice.toFixed(2)}${item.priceUnit ?? ''}`
-              : `$${(item.comparePrice * item.quantity).toFixed(2)}`
-            }
+              ? `$${item.comparePrice.toFixed(2)}${item.priceUnit ?? ""}`
+              : `$${(item.comparePrice * item.quantity).toFixed(2)}`}
           </p>
         )}
         <p className={`text-[14px] font-bold leading-tight text-primary`}>
           {item.isFree
-            ? 'FREE'
+            ? "FREE"
             : isPlan
-              ? `$${item.price.toFixed(2)}${item.priceUnit ?? ''}`
-              : `$${(item.price * item.quantity).toFixed(2)}`
-          }
+              ? `$${item.price.toFixed(2)}${item.priceUnit ?? ""}`
+              : `$${(item.price * item.quantity).toFixed(2)}`}
         </p>
       </div>
       {/* <div className="h-px bg-line-subtle" /> */}
-
-          
     </div>
-  )
+  );
 }
